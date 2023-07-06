@@ -1,0 +1,41 @@
+{
+  "name": "vaporeon",
+  "version": "1.0.0",
+  "description": "Serviço responsável pelo gerenciamento de sensores do sistema Pluvial.",
+  "main": ".eslintrc.js",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "tsc build index.ts",
+    "start": "nodemon index.ts",
+    "start:dev": "nodemon index.ts --watch",
+    "start:debug": "nodemon index.ts --debug --watch",
+    "start:prod": "node dist/main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrainiaxSolutions/vaporeon.git"
+  },
+  "author": "Beatriz Assunção, Luiz Ricardo Santos, Ian Soares e Yumi Tokuo",
+  "bugs": {
+    "url": "https://github.com/BrainiaxSolutions/vaporeon/issues"
+  },
+  "homepage": "https://github.com/BrainiaxSolutions/vaporeon#readme",
+  "devDependencies": {
+    "@types/node": "^20.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^3.0.0",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "mqtt": "^4.3.7"
+  }
+}
