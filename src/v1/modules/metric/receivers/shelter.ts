@@ -12,13 +12,16 @@ export class Shelter implements Receiver {
     latitude: number,
     metersAway: number,
   ): Promise<ShelterEntity[]> {
-    const shelters = await this.shelterRepository.find({
-      location: {
-        $geoWithin: {
-          $centerSphere: [[longitude, latitude], metersAway / 6371],
+    const shelters = await this.shelterRepository
+      .find({
+        location: {
+          $geoWithin: {
+            $centerSphere: [[longitude, latitude], metersAway / 6371],
+          },
         },
-      },
-    });
+      })
+      .lean()
+      .exec();
 
     return shelters;
   }

@@ -39,8 +39,8 @@ export class MetricService {
       metric,
     );
 
-    if (alertsToBeFired.length) {
-      alertsToBeFired.forEach(async (alert) => {
+    const receivers = await Promise.all(
+      alertsToBeFired.map(async (alert) => {
         const receiverInstance = getInstanceReceiver(
           alert.receiver,
           this.shelterRepository,
@@ -52,11 +52,10 @@ export class MetricService {
           5,
         );
 
-        console.log(receivers);
-      });
-    }
-    //deviceInstance.alert(alertsToBeFired);
+        return receivers;
+      }),
+    );
 
-    return deviceEntity;
+    return receivers;
   }
 }

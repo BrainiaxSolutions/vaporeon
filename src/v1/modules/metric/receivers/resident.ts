@@ -12,13 +12,17 @@ export class Resident implements Receiver {
     latitude: number,
     metersAway: number,
   ): Promise<ResidentEntity[]> {
-    const residents = await this.residentRepository.find({
-      location: {
-        $geoWithin: {
-          $centerSphere: [[longitude, latitude], metersAway / 6371],
+    const residents = await this.residentRepository
+      .find({
+        location: {
+          $geoWithin: {
+            $centerSphere: [[longitude, latitude], metersAway / 6371],
+          },
         },
-      },
-    });
+      })
+      .lean()
+      .exec();
+
     return residents;
   }
 }
