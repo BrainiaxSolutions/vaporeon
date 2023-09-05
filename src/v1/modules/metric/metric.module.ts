@@ -2,17 +2,30 @@ import { Module } from '@nestjs/common';
 import { MetricService } from './metric.service';
 import { MetricController } from './metric.controller';
 import {
-  Device,
+  DeviceEntity,
   DeviceSchema,
 } from 'src/v1/database/models/device.entity';
-import { TemplateMessage, TemplateMessageSchema } from 'src/v1/database/models/templateMessage.entity';
+import {
+  TemplateMessageEntity,
+  TemplateMessageSchema,
+} from 'src/v1/database/models/templateMessage.entity';
 import { MongooseModule } from '@nestjs/mongoose';
+import {
+  ResidentEntity,
+  ResidentSchema,
+} from 'src/v1/database/models/resident.entity';
+import {
+  ShelterEntity,
+  ShelterSchema,
+} from 'src/v1/database/models/shelter.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Device.name, schema: DeviceSchema },
-      { name: TemplateMessage.name, schema: TemplateMessageSchema },
+      { name: DeviceEntity.name, schema: DeviceSchema },
+      { name: ResidentEntity.name, schema: ResidentSchema },
+      { name: ShelterEntity.name, schema: ShelterSchema },
+      { name: TemplateMessageEntity.name, schema: TemplateMessageSchema },
     ]),
   ],
   controllers: [MetricController],

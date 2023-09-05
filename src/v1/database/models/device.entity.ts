@@ -1,12 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { DeviceNameEnum } from 'src/enum/deviceEnum';
 import { v4 as uuidv4 } from 'uuid';
 
-enum DeviceNameEnum {
-  PLUVIOMETER = 'pluviometer',
-}
-
-@Schema()
-export class Device {
+@Schema({ collection: 'devices' })
+export class DeviceEntity {
   @Prop({
     type: String,
     default: () => uuidv4(),
@@ -21,20 +18,17 @@ export class Device {
   deviceName: string;
 
   @Prop({
-    type: String,
-    minLength: 3,
-    maxLength: 12,
-    required: true,
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: [Number],
   })
-  latitude: string;
-
-  @Prop({
-    type: String,
-    minLength: 3,
-    maxLength: 12,
-    required: true,
-  })
-  longitude: string;
+  location: {
+    type: string;
+    coordinates: [number, number];
+  };
 
   @Prop({
     type: Number,
@@ -45,8 +39,8 @@ export class Device {
   @Prop({
     type: [],
     required: true,
-  })  
-  alerts: Alert[]
+  })
+  alerts: AlertObject[];
 
   @Prop({
     type: Date,
@@ -61,5 +55,4 @@ export class Device {
   updatedAt: Date;
 }
 
-export const DeviceSchema = SchemaFactory.createForClass(Device);
-
+export const DeviceSchema = SchemaFactory.createForClass(DeviceEntity);
