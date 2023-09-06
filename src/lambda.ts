@@ -26,7 +26,7 @@ let cachedNestApp: NestApp;
 
 function swaggerConfig() {
   const config = new DocumentBuilder()
-    .setTitle('API Togepi')
+    .setTitle('API Vaporeon')
     .setDescription(
       'Lambda responsável pelo gerenciamento de alertas do sistema Pluvial.',
     )
