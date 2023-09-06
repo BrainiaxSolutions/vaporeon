@@ -1,5 +1,6 @@
-type Alert = {
-    percent: number;
-    typeAlert: string[];
-    templateId: string;
+type AlertObject = {
+  receiver: string;
+  percent: number;
+  typeAlert: string[];
+  templateId: string;
 };

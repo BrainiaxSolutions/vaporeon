@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-@Schema()
-export class TemplateMessage {
+@Schema({ collection: 'templateMessages' })
+export class TemplateMessageEntity {
   @Prop({
     type: String,
     default: () => uuidv4(),
@@ -28,4 +28,6 @@ export class TemplateMessage {
   updatedAt: Date;
 }
 
-export const TemplateMessageSchema = SchemaFactory.createForClass(TemplateMessage);
+export const TemplateMessageSchema = SchemaFactory.createForClass(
+  TemplateMessageEntity,
+);
