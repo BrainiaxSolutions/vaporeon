@@ -1,7 +1,11 @@
+import { DeviceEntity } from 'src/v1/database/models/device.entity';
+
 export interface Receiver {
-  findReceivers(
+  formatMessageReceivers(
     longitude: number,
     latitude: number,
     metersAway: number,
-  ): Promise<(ShelterReceiverObject | ResidentReceiverObject)[]>;
+    alert: AlertObject,
+    deviceEntity?: DeviceEntity,
+  ): Promise<(ShelterReceiverMessageObject | ResidentReceiverMessageObject)[]>;
 }

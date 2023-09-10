@@ -3,6 +3,7 @@ import { Receiver } from './receiver';
 import { Model } from 'mongoose';
 import { ShelterEntity } from 'src/v1/database/models/shelter.entity';
 import { ResidentEntity } from 'src/v1/database/models/resident.entity';
+import { DeviceEntity } from 'src/v1/database/models/device.entity';
 
 @Injectable()
 export class Shelter implements Receiver {
@@ -11,11 +12,13 @@ export class Shelter implements Receiver {
     private readonly residentRepository: Model<ResidentEntity>,
   ) {}
 
-  public async findReceivers(
+  public async formatMessageReceivers(
     longitude: number,
     latitude: number,
     metersAway: number,
-  ): Promise<ShelterReceiverObject[]> {
+    alert: AlertObject,
+    deviceEntity: DeviceEntity,
+  ): Promise<ShelterReceiverMessageObject[]> {
     const shelters = await this.shelterRepository
       .find({
         location: {
@@ -38,7 +41,16 @@ export class Shelter implements Receiver {
       .count();
 
     return shelters.map((shelter) => {
-      return { ...shelter, messageData: { amoutResidents } };
+      return {
+        recipient: { email: shelter.email, phone: shelter.phone },
+        content: {
+          name: shelter.name,
+          street: deviceEntity.street,
+          amoutResidents,
+        },
+        typeAlert: alert.typeAlert,
+        templateId: alert.templateId,
+      };
     });
   }
 }

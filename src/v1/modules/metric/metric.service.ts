@@ -84,38 +84,29 @@ export class MetricService {
       metric,
     );
 
-    const receivers = await Promise.all(
+    const messagesToReceivers = await Promise.all(
       alertsToBeFired.map(async (alert) => {
         const receiverInstance = getInstanceReceiver(
           alert.receiver,
           this.shelterRepository,
           this.residentRepository,
         );
-        const receivers = await receiverInstance.findReceivers(
+        return await receiverInstance.formatMessageReceivers(
           deviceEntity.location.coordinates[0],
           deviceEntity.location.coordinates[1],
           5,
+          alert,
+          deviceEntity,
         );
-        // TODO: mover isso para cada strategy do receiver, então cada receiver retorna seu estilo de envio de mensagem
-        return receivers.map((receiver) => {
-          return {
-            recipient: { email: receiver.email, phone: receiver.phone },
-            content: {
-              receiver: { name: receiver.name },
-              street: deviceEntity.street,
-            },
-            typeAlert: alert.typeAlert,
-            templateId: alert.templateId,
-          };
-        });
       }),
     );
 
-    // envia notificações aqui
+    // TODO: chama o Pidgey e envia notificações aqui
+    // await pidgey.sendMessage(messagesToReceivers)
 
     await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
 
-    return receivers;
+    return messagesToReceivers;
   }
 
   async resetRemainingNotifications(id: string) {

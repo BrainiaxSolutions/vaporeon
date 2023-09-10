@@ -9,3 +9,8 @@ type AlertObject = {
   typeAlert: string[];
   templateId: string;
 };
+
+type recipientObject = {
+  email: string;
+  phone: string;
+};
