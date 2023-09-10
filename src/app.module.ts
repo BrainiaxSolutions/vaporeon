@@ -19,7 +19,7 @@ import { HealthModule } from './v1/modules/health/health.module';
       inject: [ConfigService],
     }),
     HealthModule,
-    V1MetricModule
+    V1MetricModule,
   ],
   providers: [
     {

@@ -5,10 +5,6 @@ import {
   DeviceEntity,
   DeviceSchema,
 } from 'src/v1/database/models/device.entity';
-import {
-  TemplateMessageEntity,
-  TemplateMessageSchema,
-} from 'src/v1/database/models/templateMessage.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   ResidentEntity,
@@ -25,7 +21,6 @@ import {
       { name: DeviceEntity.name, schema: DeviceSchema },
       { name: ResidentEntity.name, schema: ResidentSchema },
       { name: ShelterEntity.name, schema: ShelterSchema },
-      { name: TemplateMessageEntity.name, schema: TemplateMessageSchema },
     ]),
   ],
   controllers: [MetricController],

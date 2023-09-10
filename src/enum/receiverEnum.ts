@@ -10,8 +10,14 @@ export const getInstanceReceiver = (
   residentRepository: Model<ResidentEntity>,
 ) => {
   const ReceiverEnums = [
-    { name: 'shelters', instance: new Shelter(shelterRepository) },
-    { name: 'residents', instance: new Resident(residentRepository) },
+    {
+      name: 'shelters',
+      instance: new Shelter(shelterRepository, residentRepository),
+    },
+    {
+      name: 'residents',
+      instance: new Resident(residentRepository, shelterRepository),
+    },
   ];
 
   return ReceiverEnums.find((receiverEnum) => {

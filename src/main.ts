@@ -53,7 +53,7 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, swaggerConfig());
     SwaggerModule.setup('api/vaporeon/docs', app, document);
   }
- 
+
   await app.listen(config.app.port);
 }
 
