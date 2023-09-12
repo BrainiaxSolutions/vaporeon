@@ -8,9 +8,9 @@ export const config = Object.freeze({
     url: process.env.DB_URL,
   },
   providers: {
-    geocoder: {
-      url: process.env.URL_GEOCODING,
-      key: process.env.API_KEY_GEOCODING,
+    pidgey: {
+      url: process.env.URL_PIDGEY,
+      key: process.env.API_KEY_PIDGEY,
     },
   },
 });

@@ -16,7 +16,7 @@ export class Resident implements Receiver {
     latitude: number,
     metersAway: number,
     alert: AlertObject,
-  ): Promise<ResidentReceiverMessageObject[]> {
+  ): Promise<sendNotificationPidgeyObject[]> {
     const residents = await this.residentRepository
       .find({
         location: {
@@ -50,7 +50,7 @@ export class Resident implements Receiver {
           name: resident.name,
           listShelters,
         },
-        typeAlert: alert.typeAlert,
+        typeNotification: alert.typeAlert,
         templateId: alert.templateId,
       };
     });

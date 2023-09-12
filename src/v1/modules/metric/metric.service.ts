@@ -7,6 +7,7 @@ import { getInstanceReceiver } from 'src/enum/receiverEnum';
 import { ShelterEntity } from 'src/v1/database/models/shelter.entity';
 import { ResidentEntity } from 'src/v1/database/models/resident.entity';
 import { differenceBetweenDates } from 'src/helpers/utils';
+import { Pidgey } from 'src/providers/pidgey';
 
 @Injectable()
 export class MetricService {
@@ -68,9 +69,9 @@ export class MetricService {
   }
 
   async alert(id: string, metric: number) {
-    const deviceEntity: DeviceEntity = (
-      await this.deviceRepository.findOne({ _id: id })
-    ).toObject();
+    const deviceEntity: DeviceEntity = await this.deviceRepository.findOne({
+      _id: id,
+    });
 
     if (!deviceEntity) {
       throw new HttpException(
@@ -84,25 +85,26 @@ export class MetricService {
       metric,
     );
 
-    const messagesToReceivers = await Promise.all(
-      alertsToBeFired.map(async (alert) => {
-        const receiverInstance = getInstanceReceiver(
-          alert.receiver,
-          this.shelterRepository,
-          this.residentRepository,
-        );
-        return await receiverInstance.formatMessageReceivers(
-          deviceEntity.location.coordinates[0],
-          deviceEntity.location.coordinates[1],
-          5,
-          alert,
-          deviceEntity,
-        );
-      }),
-    );
+    const [messagesToReceivers]: sendNotificationPidgeyObject[][] =
+      await Promise.all(
+        alertsToBeFired.map(async (alert) => {
+          const receiverInstance = getInstanceReceiver(
+            alert.receiver,
+            this.shelterRepository,
+            this.residentRepository,
+          );
+          return await receiverInstance.formatMessageReceivers(
+            deviceEntity.location.coordinates[0],
+            deviceEntity.location.coordinates[1],
+            5,
+            alert,
+            deviceEntity,
+          );
+        }),
+      );
 
-    // TODO: chama o Pidgey e envia notificações aqui
-    // await pidgey.sendMessage(messagesToReceivers)
+    const pidgey = new Pidgey();
+    await pidgey.sendNotifications(messagesToReceivers);
 
     await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
 

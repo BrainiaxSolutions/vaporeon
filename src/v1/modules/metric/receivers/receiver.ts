@@ -7,5 +7,5 @@ export interface Receiver {
     metersAway: number,
     alert: AlertObject,
     deviceEntity?: DeviceEntity,
-  ): Promise<(ShelterReceiverMessageObject | ResidentReceiverMessageObject)[]>;
+  ): Promise<(sendNotificationPidgeyObject | sendNotificationPidgeyObject)[]>;
 }

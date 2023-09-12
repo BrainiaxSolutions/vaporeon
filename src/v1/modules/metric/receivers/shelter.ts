@@ -18,7 +18,7 @@ export class Shelter implements Receiver {
     metersAway: number,
     alert: AlertObject,
     deviceEntity: DeviceEntity,
-  ): Promise<ShelterReceiverMessageObject[]> {
+  ): Promise<sendNotificationPidgeyObject[]> {
     const shelters = await this.shelterRepository
       .find({
         location: {
@@ -48,7 +48,7 @@ export class Shelter implements Receiver {
           street: deviceEntity.street,
           amoutResidents,
         },
-        typeAlert: alert.typeAlert,
+        typeNotification: alert.typeAlert,
         templateId: alert.templateId,
       };
     });
