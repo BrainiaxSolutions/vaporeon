@@ -20,7 +20,6 @@ export class Pidgey {
         '/v1/notification/sendNotifications',
         {
           notifications: notificationsToBeSent,
-          a: {},
         },
       );
 

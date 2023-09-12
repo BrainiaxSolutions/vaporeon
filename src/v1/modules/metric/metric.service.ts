@@ -103,12 +103,14 @@ export class MetricService {
         }),
       );
 
-    const pidgey = new Pidgey();
-    await pidgey.sendNotifications(messagesToReceivers);
+    if (messagesToReceivers) {
+      const pidgey = new Pidgey();
+      await pidgey.sendNotifications(messagesToReceivers);
+      await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
+      return { message: 'alerts sent successfully' };
+    }
 
-    await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
-
-    return messagesToReceivers;
+    return { message: 'No alerts to sent.' };
   }
 
   async resetRemainingNotifications(id: string) {
