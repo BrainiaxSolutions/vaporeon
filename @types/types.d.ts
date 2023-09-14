@@ -1,3 +1,8 @@
+type TypeAlertObject = {
+  name: string;
+  templateId: string;
+};
+
 type AlertObject = {
   alertId: number;
   receiver: string;
@@ -6,8 +11,7 @@ type AlertObject = {
   maxNotifications: number;
   remainingNotifications: number;
   sleepMinutes: number;
-  typeAlert: string[];
-  templateId: string;
+  typeAlert: TypeAlertObject;
 };
 
 type recipientObject = {
@@ -18,6 +22,5 @@ type recipientObject = {
 type sendNotificationPidgeyObject = {
   recipient: recipientObject;
   content: any;
-  typeNotification: string[];
-  templateId: string;
+  typeNotification: TypeAlertObject;
 };

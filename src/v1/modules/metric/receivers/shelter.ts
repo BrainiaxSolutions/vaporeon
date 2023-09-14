@@ -57,7 +57,6 @@ export class Shelter implements Receiver {
           amoutResidents,
         },
         typeNotification: alert.typeAlert,
-        templateId: alert.templateId,
       };
     });
   }
