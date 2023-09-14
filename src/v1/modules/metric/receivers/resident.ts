@@ -3,6 +3,7 @@ import { Receiver } from './receiver';
 import { Model } from 'mongoose';
 import { ResidentEntity } from 'src/v1/database/models/resident.entity';
 import { ShelterEntity } from 'src/v1/database/models/shelter.entity';
+import { config } from 'src/config';
 
 @Injectable()
 export class Resident implements Receiver {
@@ -40,7 +41,14 @@ export class Resident implements Receiver {
       .exec();
 
     const listShelters = shelters.map((shelter) => {
-      return `${shelter.name} - ${shelter.address}, ${shelter.addressNumber}`;
+      return {
+        name: shelter.name,
+        address: shelter.address,
+        addressNumber: shelter.addressNumber,
+        urlMap: config.providers.maps.url,
+        latitude: shelter.location.coordinates[1],
+        longitude: shelter.location.coordinates[0],
+      };
     });
 
     return residents.map((resident) => {

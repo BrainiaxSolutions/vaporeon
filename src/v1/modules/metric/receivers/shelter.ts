@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { ShelterEntity } from 'src/v1/database/models/shelter.entity';
 import { ResidentEntity } from 'src/v1/database/models/resident.entity';
 import { DeviceEntity } from 'src/v1/database/models/device.entity';
+import { config } from 'src/config';
 
 @Injectable()
 export class Shelter implements Receiver {
@@ -40,12 +41,19 @@ export class Shelter implements Receiver {
       })
       .count();
 
+    const deviceAddress = {
+      street: deviceEntity.street,
+      urlMap: config.providers.maps.url,
+      latitude: deviceEntity.location.coordinates[1],
+      longitude: deviceEntity.location.coordinates[0],
+    };
+
     return shelters.map((shelter) => {
       return {
         recipient: { email: shelter.email, phone: shelter.phone },
         content: {
           name: shelter.name,
-          street: deviceEntity.street,
+          deviceAddress,
           amoutResidents,
         },
         typeNotification: alert.typeAlert,

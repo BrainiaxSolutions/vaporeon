@@ -12,5 +12,8 @@ export const config = Object.freeze({
       url: process.env.URL_PIDGEY,
       key: process.env.API_KEY_PIDGEY,
     },
+    maps: {
+      url: process.env.URL_MAPS,
+    },
   },
 });
