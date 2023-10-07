@@ -1,10 +1,8 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
 import { ExceptionDto } from 'src/config/error/exception.dto';
 import { MetricService } from './metric.service';
 
 @Controller('v1/metric')
-@ApiTags('Metric')
 export class MetricController {
   constructor(private readonly metricService: MetricService) {}
 
