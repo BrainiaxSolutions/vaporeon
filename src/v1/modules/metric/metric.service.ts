@@ -114,9 +114,16 @@ export class MetricService {
   }
 
   async resetRemainingNotifications(id: string) {
-    const deviceEntity: DeviceEntity = (
-      await this.deviceRepository.findOne({ _id: id })
-    ).toObject();
+    const deviceEntity: DeviceEntity = await this.deviceRepository.findOne({
+      _id: id,
+    });
+
+    if (!deviceEntity) {
+      throw new HttpException(
+        'This device id not exists in database.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
 
     deviceEntity.alerts.map((alert) => {
       alert.remainingNotifications = alert.maxNotifications;
