@@ -104,3 +104,14 @@ variable "api_gateway_parent_id" {
   description = "AWS API Gateway parent id"
   type        = string
 }
+
+
+variable "api_gateway_authorizer_id" {
+  description = "AWS API Gateway authorizer id"
+  type        = string
+}
+
+variable "api_gateway_authorization_scopes" {
+  description = "AWS API Gateway authorization scopes"
+  type        = list(string)
+}

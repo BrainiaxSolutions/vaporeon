@@ -7,10 +7,12 @@ resource "aws_api_gateway_resource" "api_gateway_resource" {
 resource "aws_api_gateway_method" "api_gateway_method" {
   count = length(var.api_gateway_methods)
 
-  rest_api_id   = data.aws_api_gateway_rest_api.api_gateway.id
-  resource_id   = aws_api_gateway_resource.api_gateway_resource.id
-  http_method   = var.api_gateway_methods[count.index]
-  authorization = "NONE"
+  rest_api_id          = data.aws_api_gateway_rest_api.api_gateway.id
+  resource_id          = aws_api_gateway_resource.api_gateway_resource.id
+  http_method          = var.api_gateway_methods[count.index]
+  authorization        = "COGNITO_USER_POOLS"
+  authorizer_id        = var.api_gateway_authorizer_id
+  authorization_scopes = var.api_gateway_authorization_scopes
 }
 
 resource "aws_api_gateway_integration" "api_gateway_integration" {
@@ -33,10 +35,12 @@ resource "aws_api_gateway_resource" "api_gateway_resource_n2" {
 resource "aws_api_gateway_method" "api_gateway_method_n2" {
   count = length(var.api_gateway_methods)
 
-  rest_api_id   = data.aws_api_gateway_rest_api.api_gateway.id
-  resource_id   = aws_api_gateway_resource.api_gateway_resource_n2.id
-  http_method   = var.api_gateway_methods[count.index]
-  authorization = "NONE"
+  rest_api_id          = data.aws_api_gateway_rest_api.api_gateway.id
+  resource_id          = aws_api_gateway_resource.api_gateway_resource_n2.id
+  http_method          = var.api_gateway_methods[count.index]
+  authorization        = "COGNITO_USER_POOLS"
+  authorizer_id        = var.api_gateway_authorizer_id
+  authorization_scopes = var.api_gateway_authorization_scopes
 }
 
 resource "aws_api_gateway_integration" "api_gateway_integration_n2" {

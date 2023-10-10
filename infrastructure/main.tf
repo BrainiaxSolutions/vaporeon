@@ -1,13 +1,15 @@
 module "vaporeon_lambda_production" {
   source = "./modules/lambda"
 
-  api_gateway_name        = var.api_gateway_name
-  api_gateway_stage_name  = var.api_gateway_stage_name
-  api_gateway_domain_name = var.api_gateway_domain_name
-  api_gateway_methods     = var.api_gateway_methods
-  api_gateway_paths       = var.api_gateway_paths
-  api_gateway_resources   = var.api_gateway_resources
-  api_gateway_parent_id   = aws_api_gateway_resource.api_gateway_resource_n2.id
+  api_gateway_name                 = var.api_gateway_name
+  api_gateway_stage_name           = var.api_gateway_stage_name
+  api_gateway_domain_name          = var.api_gateway_domain_name
+  api_gateway_methods              = var.api_gateway_methods
+  api_gateway_paths                = var.api_gateway_paths
+  api_gateway_resources            = var.api_gateway_resources
+  api_gateway_parent_id            = aws_api_gateway_resource.api_gateway_resource_n2.id
+  api_gateway_authorization_scopes = ["all"]
+  api_gateway_authorizer_id        = data.aws_api_gateway_authorizer.authorizer.id
 
   lambda_function_name             = var.lambda_function_name
   lambda_function_description      = var.lambda_function_description
