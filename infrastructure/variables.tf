@@ -25,7 +25,7 @@ variable "api_gateway_methods" {
 variable "api_gateway_paths" {
   description = "AWS API Gateway lambda paths"
   type        = list(string)
-  default     = ["metric", "metric/reset"]
+  default     = ["metric", "reset"]
 }
 
 variable "api_gateway_resources" {
