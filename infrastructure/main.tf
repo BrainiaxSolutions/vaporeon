@@ -18,12 +18,12 @@ module "vaporeon_lambda_production" {
   lambda_function_output_path      = var.lambda_function_output_path
 
   lambda_function_env = {
-    APP_ENVIRONMENT   = "PRD",
-    PORT              = "4003",
-    DB_NAME           = "mongodb",
-    URL_GEOCODING     = "https://maps.googleapis.com/maps/api/geocode",
-    DB_URL            = "${data.external.secrets_manager_secret_json.result["DB_URL"]}",
-    API_KEY_GEOCODING = "${data.external.secrets_manager_secret_json.result["API_KEY_GEOCODING"]}",
+    APP_ENVIRONMENT = "PRD",
+    PORT            = "4000",
+    DB_NAME         = "mongodb",
+    URL_MAPS        = "https://www.google.com/maps/dir/",
+    DB_URL          = "${data.external.secrets_manager_secret_json.result["DB_URL"]}",
+    URL_PIDGEY      = "${data.external.secrets_manager_secret_json.result["URL_PIDGEY"]}",
   }
 
   lambda_function_cors = {
