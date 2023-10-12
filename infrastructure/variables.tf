@@ -52,10 +52,22 @@ variable "lambda_function_handler" {
   default     = "lambda.handler"
 }
 
+variable "lambda_function_bucket_name" {
+  description = "AWS Lambda function bucket name"
+  type        = string
+  default     = "pluvial-lambdas-deployments-bucket"
+}
+
+variable "lambda_function_bucket_key" {
+  description = "AWS Lambda function bucket key"
+  type        = string
+  default     = "vaporeon/dist.zip"
+}
+
 variable "lambda_function_source_code_path" {
   description = "Path where AWS Lambda source code will be stored"
   type        = string
-  default     = "../dist"
+  default     = "../vaporeon/dist.zip"
 }
 
 variable "lambda_function_output_path" {

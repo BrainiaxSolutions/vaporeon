@@ -1,3 +1,8 @@
+resource "aws_s3_object" "lambda_function_source_code" {
+  bucket = var.lambda_function_bucket_name
+  key    = var.lambda_function_bucket_key
+  source = var.lambda_function_source_code_path
+}
 
 resource "aws_lambda_function" "lambda_function" {
   function_name = var.lambda_function_name
@@ -7,8 +12,10 @@ resource "aws_lambda_function" "lambda_function" {
   role          = aws_iam_role.iam_role.arn
   tags          = var.tags
 
-  filename         = data.archive_file.lambda_source_code.output_path
-  source_code_hash = data.archive_file.lambda_source_code.output_base64sha256
+  # filename         = data.archive_file.lambda_source_code.output_path
+  # source_code_hash = data.archive_file.lambda_source_code.output_base64sha256
+  s3_bucket = var.lambda_function_bucket_name
+  s3_key    = var.lambda_function_bucket_key
 
   timeout     = var.lambda_function_timeout
   memory_size = var.lambda_function_memory_size

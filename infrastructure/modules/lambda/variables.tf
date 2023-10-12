@@ -64,6 +64,16 @@ variable "lambda_function_cors" {
   })
 }
 
+variable "lambda_function_bucket_name" {
+  description = "AWS Lambda function bucket name"
+  type        = string
+}
+
+variable "lambda_function_bucket_key" {
+  description = "AWS Lambda function bucket key"
+  type        = string
+}
+
 variable "api_gateway_name" {
   description = "AWS API Gateway to hold all lambda triggers"
   type        = string
@@ -104,7 +114,6 @@ variable "api_gateway_parent_id" {
   description = "AWS API Gateway parent id"
   type        = string
 }
-
 
 variable "api_gateway_authorizer_id" {
   description = "AWS API Gateway authorizer id"
