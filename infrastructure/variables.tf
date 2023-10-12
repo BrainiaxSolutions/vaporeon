@@ -19,7 +19,7 @@ variable "api_gateway_domain_name" {
 variable "api_gateway_methods" {
   description = "AWS API Gateway lambda method"
   type        = list(string)
-  default     = ["POST", "PATCH"]
+  default     = ["GET"]
 }
 
 variable "api_gateway_paths" {
