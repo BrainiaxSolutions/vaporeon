@@ -14,7 +14,7 @@ resource "aws_api_gateway_method" "api_gateway_method" {
   authorizer_id        = var.api_gateway_authorizer_id
   authorization_scopes = var.api_gateway_authorization_scopes
 
-  depends_on = [ aws_lambda_function.lambda_function ]
+  depends_on = [aws_lambda_function.lambda_function]
 }
 
 resource "aws_api_gateway_integration" "api_gateway_integration" {
@@ -55,7 +55,7 @@ resource "aws_api_gateway_integration" "api_gateway_integration_n2" {
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.lambda_function.invoke_arn
 
-  depends_on = [ aws_lambda_function.lambda_function ]
+  depends_on = [aws_lambda_function.lambda_function]
 }
 
 resource "aws_api_gateway_deployment" "api_gateway_deployment" {
@@ -63,7 +63,7 @@ resource "aws_api_gateway_deployment" "api_gateway_deployment" {
   stage_name  = var.api_gateway_stage_name
 
   triggers = {
-    redeployment = sha1(jsonencode([data.aws_api_gateway_rest_api.api_gateway.body]))
+    redeployment = sha1(jsonencode([data.aws_api_gateway_rest_api.api_gateway.id]))
   }
 
   lifecycle {
