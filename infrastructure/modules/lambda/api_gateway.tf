@@ -63,14 +63,7 @@ resource "aws_api_gateway_deployment" "api_gateway_deployment" {
   stage_name  = var.api_gateway_stage_name
 
   triggers = {
-    redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.api_gateway_resource.id,
-      aws_api_gateway_method.api_gateway_method.*.id,
-      aws_api_gateway_integration.api_gateway_integration.*.id,
-      aws_api_gateway_resource.api_gateway_resource_n2.id,
-      aws_api_gateway_method.api_gateway_method_n2.*.id,
-      aws_api_gateway_integration.api_gateway_integration_n2.*.id
-    ]))
+    redeployment = sha1(jsonencode([data.aws_api_gateway_rest_api.api_gateway.body]))
   }
 
   lifecycle {
