@@ -67,9 +67,9 @@ resource "aws_api_gateway_deployment" "api_gateway_deployment" {
       aws_api_gateway_resource.api_gateway_resource.id,
       aws_api_gateway_method.api_gateway_method.*.id,
       aws_api_gateway_integration.api_gateway_integration.*.id,
-      aws_api_gateway_resource.api_gateway_resource_n2.id,
-      aws_api_gateway_method.api_gateway_method_n2.*.id,
-      aws_api_gateway_integration.api_gateway_integration_n2.*.id
+      # aws_api_gateway_resource.api_gateway_resource_n2.id,
+      # aws_api_gateway_method.api_gateway_method_n2.*.id,
+      # aws_api_gateway_integration.api_gateway_integration_n2.*.id
     ]))
   }
 
