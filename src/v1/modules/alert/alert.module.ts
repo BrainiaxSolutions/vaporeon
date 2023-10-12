@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { MetricService } from './metric.service';
-import { MetricController } from './metric.controller';
+import { AlertService } from './alert.service';
+import { AlertController } from './alert.controller';
 import {
   DeviceEntity,
   DeviceSchema,
@@ -23,7 +23,7 @@ import {
       { name: ShelterEntity.name, schema: ShelterSchema },
     ]),
   ],
-  controllers: [MetricController],
-  providers: [MetricService],
+  controllers: [AlertController],
+  providers: [AlertService],
 })
-export class V1MetricModule {}
+export class V1AlertModule {}

@@ -27,6 +27,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/vaporeon');
   app.useGlobalFilters(new HttpExceptionFilter());
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  console.log(config.app.port);
 
   await app.listen(config.app.port);
 }

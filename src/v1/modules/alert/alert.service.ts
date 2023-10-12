@@ -10,7 +10,7 @@ import { differenceBetweenDates } from 'src/helpers/utils';
 import { Pidgey } from 'src/providers/pidgey';
 
 @Injectable()
-export class MetricService {
+export class AlertService {
   constructor(
     @InjectModel(DeviceEntity.name)
     private deviceRepository: Model<DeviceEntity>,
@@ -49,12 +49,12 @@ export class MetricService {
 
   private async alertsToBeFired(
     deviceEntity: DeviceEntity,
-    metric: number,
+    alert: number,
   ): Promise<AlertObject[]> {
     const deviceInstance = getInstanceDevice(deviceEntity.deviceName);
 
     return deviceInstance
-      .alertsToBeFired(deviceEntity, metric)
+      .alertsToBeFired(deviceEntity, alert)
       .filter((alert) => {
         const timeRange = differenceBetweenDates(
           new Date(),
@@ -138,6 +138,6 @@ export class MetricService {
       },
     );
 
-    return { message: 'Metrics reset successfully.' };
+    return { message: 'Alerts reset successfully.' };
   }
 }
