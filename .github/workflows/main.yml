@@ -38,7 +38,7 @@ jobs:
       run: mkdir vaporeon
 
     - name: Build step 08 - Zip dist
-      run: zip -r vaporeon/dist.zip dist
+      run: cd vaporeon && zip -r dist.zip .
 
     - name: Infrastructure step 01 - Terraform Install
       env :
