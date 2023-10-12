@@ -23,6 +23,10 @@ resource "aws_lambda_function" "lambda_function" {
   environment {
     variables = var.lambda_function_env
   }
+
+  depends_on = [
+    aws_s3_object.lambda_function_source_code
+  ]
 }
 
 resource "aws_lambda_function_url" "mylambda_function_url" {
