@@ -13,6 +13,8 @@ resource "aws_api_gateway_method" "api_gateway_method" {
   authorization        = "COGNITO_USER_POOLS"
   authorizer_id        = var.api_gateway_authorizer_id
   authorization_scopes = var.api_gateway_authorization_scopes
+
+  depends_on = [ aws_lambda_function.lambda_function ]
 }
 
 resource "aws_api_gateway_integration" "api_gateway_integration" {
@@ -52,6 +54,8 @@ resource "aws_api_gateway_integration" "api_gateway_integration_n2" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.lambda_function.invoke_arn
+
+  depends_on = [ aws_lambda_function.lambda_function ]
 }
 
 resource "aws_api_gateway_deployment" "api_gateway_deployment" {
