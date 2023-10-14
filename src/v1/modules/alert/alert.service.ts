@@ -85,14 +85,15 @@ export class AlertService {
       metric,
     );
 
-    const [messagesToReceivers]: sendNotificationPidgeyObject[][] =
-      await Promise.all(
+    const messagesToReceivers: sendNotificationPidgeyObject[] = [].concat(
+      ...(await Promise.all(
         alertsToBeFired.map(async (alert) => {
           const receiverInstance = getInstanceReceiver(
             alert.receiver,
             this.shelterRepository,
             this.residentRepository,
           );
+
           return await receiverInstance.formatMessageReceivers(
             deviceEntity.location.coordinates[0],
             deviceEntity.location.coordinates[1],
@@ -101,10 +102,12 @@ export class AlertService {
             deviceEntity,
           );
         }),
-      );
+      )),
+    );
 
     if (messagesToReceivers) {
       const pidgey = new Pidgey();
+
       await pidgey.sendNotifications(messagesToReceivers);
       await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
       return { message: 'alerts sent successfully' };
