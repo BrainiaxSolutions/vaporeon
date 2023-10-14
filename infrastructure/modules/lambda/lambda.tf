@@ -2,6 +2,7 @@ resource "aws_s3_object" "lambda_function_source_code" {
   bucket = var.lambda_function_bucket_name
   key    = var.lambda_function_bucket_key
   source = var.lambda_function_source_code_path
+  etag   = filemd5(var.lambda_function_source_code_path)
 }
 
 resource "aws_lambda_function" "lambda_function" {
