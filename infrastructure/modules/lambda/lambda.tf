@@ -12,10 +12,9 @@ resource "aws_lambda_function" "lambda_function" {
   role          = aws_iam_role.iam_role.arn
   tags          = var.tags
 
-  # filename         = data.archive_file.lambda_source_code.output_path
-  # source_code_hash = data.archive_file.lambda_source_code.output_base64sha256
-  s3_bucket = var.lambda_function_bucket_name
-  s3_key    = var.lambda_function_bucket_key
+  s3_bucket        = var.lambda_function_bucket_name
+  s3_key           = var.lambda_function_bucket_key
+  source_code_hash = data.local_file.lambda_package.content_md5
 
   timeout     = var.lambda_function_timeout
   memory_size = var.lambda_function_memory_size

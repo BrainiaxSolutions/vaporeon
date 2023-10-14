@@ -1,8 +1,12 @@
-# data "archive_file" "lambda_source_code" {
-#   type        = "zip"
-#   source_dir  = var.lambda_function_source_code_path
-#   output_path = "${var.lambda_function_output_path}/${var.lambda_function_name}.zip"
-# }
+data "aws_s3_object" "lambda_zip" {
+  bucket = var.lambda_function_bucket_name
+  key    = var.lambda_function_bucket_key
+}
+
+data "local_file" "lambda_package" {
+  depends_on = [aws_s3_object.lambda_function_source_code]
+  filename   = var.lambda_function_source_code_path
+}
 
 data "aws_api_gateway_rest_api" "api_gateway" {
   name = var.api_gateway_name
