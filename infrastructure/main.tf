@@ -18,6 +18,7 @@ module "vaporeon_lambda_production" {
   lambda_function_output_path      = var.lambda_function_output_path
   lambda_function_bucket_name      = var.lambda_function_bucket_name
   lambda_function_bucket_key       = var.lambda_function_bucket_key
+  lambda_function_timeout          = "600"
 
   lambda_function_env = {
     APP_ENVIRONMENT = "PRD",
