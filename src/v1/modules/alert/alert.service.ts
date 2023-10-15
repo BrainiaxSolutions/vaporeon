@@ -105,10 +105,10 @@ export class AlertService {
       )),
     );
 
-    if (messagesToReceivers) {
+    if (messagesToReceivers.length > 0) {
       const pidgey = new Pidgey();
 
-      await pidgey.sendNotifications(messagesToReceivers);
+      pidgey.sendNotifications(messagesToReceivers);
       await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
       return { message: 'alerts sent successfully' };
     }
