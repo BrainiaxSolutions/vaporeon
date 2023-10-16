@@ -46,3 +46,8 @@ resource "aws_iam_role_policy_attachment" "lambda_cloudwatch" {
   policy_arn = aws_iam_policy.iam_cloudwatch_policy.arn
   role       = aws_iam_role.iam_role.name
 }
+
+resource "aws_iam_role_policy_attachment" "lambda_execute" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+  role       = aws_iam_role.iam_role.name
+}
