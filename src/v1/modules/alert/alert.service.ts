@@ -110,10 +110,10 @@ export class AlertService {
 
       pidgey.sendNotifications(messagesToReceivers);
       await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
-      return { message: 'alerts sent successfully' };
+      return { message: 'alerts sent successfully', flooded: true };
     }
 
-    return { message: 'No alerts to sent.' };
+    return { message: 'No alerts to sent.', flooded: false };
   }
 
   async resetRemainingNotifications(id: string) {
