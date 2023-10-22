@@ -1,4 +1,4 @@
-import { Pluviometer } from 'src/v1/modules/metric/devices/pluviometer';
+import { Pluviometer } from 'src/v1/modules/alert/devices/pluviometer';
 
 export const DeviceEnums = [
   { name: 'pluviometer', instance: new Pluviometer() },

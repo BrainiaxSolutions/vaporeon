@@ -1,14 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MetricService } from './metric.service';
-import { MetricController } from './metric.controller';
+import { AlertService } from './alert.service';
+import { AlertController } from './alert.controller';
 import {
   DeviceEntity,
   DeviceSchema,
 } from 'src/v1/database/models/device.entity';
-import {
-  TemplateMessageEntity,
-  TemplateMessageSchema,
-} from 'src/v1/database/models/templateMessage.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   ResidentEntity,
@@ -25,10 +21,9 @@ import {
       { name: DeviceEntity.name, schema: DeviceSchema },
       { name: ResidentEntity.name, schema: ResidentSchema },
       { name: ShelterEntity.name, schema: ShelterSchema },
-      { name: TemplateMessageEntity.name, schema: TemplateMessageSchema },
     ]),
   ],
-  controllers: [MetricController],
-  providers: [MetricService],
+  controllers: [AlertController],
+  providers: [AlertService],
 })
-export class V1MetricModule {}
+export class V1AlertModule {}

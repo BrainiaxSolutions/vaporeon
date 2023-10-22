@@ -6,7 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { FastifyServerOptions, FastifyInstance, fastify } from 'fastify';
-import * as awsLambdaFastify from 'aws-lambda-fastify';
+import * as awsLambdaFastify from '@fastify/aws-lambda';
 import {
   Context,
   APIGatewayProxyEvent,
@@ -14,8 +14,6 @@ import {
 } from 'aws-lambda';
 import { HttpExceptionFilter } from './config/error/http-exception.filter';
 import { useContainer } from 'class-validator';
-import { config } from './config';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 interface NestApp {
   app: NestFastifyApplication;
@@ -23,26 +21,6 @@ interface NestApp {
 }
 
 let cachedNestApp: NestApp;
-
-function swaggerConfig() {
-  const config = new DocumentBuilder()
-    .setTitle('API Vaporeon')
-    .setDescription(
-      'Lambda responsável pelo gerenciamento de alertas do sistema Pluvial.',
-    )
-    .setVersion('1.0')
-    .addSecurity('TokenAuth', {
-      type: 'http',
-      scheme: 'bearer',
-      bearerFormat: 'JWT',
-      in: 'header',
-      name: 'Authorization',
-    })
-    .addSecurityRequirements('TokenAuth')
-    .build();
-
-  return config;
-}
 
 async function bootstrapServer(): Promise<NestApp> {
   const serverOptions: FastifyServerOptions = { logger: true };
@@ -61,12 +39,6 @@ async function bootstrapServer(): Promise<NestApp> {
     }),
   );
 
-  if (config.app.environment.toUpperCase() !== 'PRD') {
-    app.setGlobalPrefix('dev/api/vaporeon');
-    const document = SwaggerModule.createDocument(app, swaggerConfig());
-    SwaggerModule.setup('api/vaporeon/docs', app, document);
-  }
-
   app.useGlobalFilters(new HttpExceptionFilter());
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.setGlobalPrefix('api/vaporeon');
@@ -79,9 +51,7 @@ export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> => {
-  if (!cachedNestApp) {
-    cachedNestApp = await bootstrapServer();
-  }
+  cachedNestApp = await bootstrapServer();
   const proxy = awsLambdaFastify(cachedNestApp.instance);
   return proxy(event, context);
 };

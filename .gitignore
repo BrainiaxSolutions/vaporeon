@@ -38,3 +38,8 @@ lerna-debug.log*
 *lock*
 .env
 Makefile
+
+# terraform
+.terraform
+*.tfvars*
+*.tfstate*

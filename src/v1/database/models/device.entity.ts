@@ -31,6 +31,13 @@ export class DeviceEntity {
   };
 
   @Prop({
+    type: String,
+    length: 45,
+    nullable: false,
+  })
+  street: string;
+
+  @Prop({
     type: Number,
     required: true,
   })

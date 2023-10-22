@@ -1,7 +1,7 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { V1MetricModule } from './v1/modules/metric/metric.module';
+import { V1AlertModule } from './v1/modules/alert/alert.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { config } from './config';
 import { HealthModule } from './v1/modules/health/health.module';
@@ -19,7 +19,7 @@ import { HealthModule } from './v1/modules/health/health.module';
       inject: [ConfigService],
     }),
     HealthModule,
-    V1MetricModule
+    V1AlertModule,
   ],
   providers: [
     {

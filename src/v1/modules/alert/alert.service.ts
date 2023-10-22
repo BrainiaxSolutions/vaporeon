@@ -1,0 +1,146 @@
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { DeviceEntity } from 'src/v1/database/models/device.entity';
+import { getInstanceDevice } from 'src/enum/deviceEnum';
+import { getInstanceReceiver } from 'src/enum/receiverEnum';
+import { ShelterEntity } from 'src/v1/database/models/shelter.entity';
+import { ResidentEntity } from 'src/v1/database/models/resident.entity';
+import { differenceBetweenDates } from 'src/helpers/utils';
+import { Pidgey } from 'src/providers/pidgey';
+
+@Injectable()
+export class AlertService {
+  constructor(
+    @InjectModel(DeviceEntity.name)
+    private deviceRepository: Model<DeviceEntity>,
+    @InjectModel(ShelterEntity.name)
+    private shelterRepository: Model<ShelterEntity>,
+    @InjectModel(ResidentEntity.name)
+    private residentRepository: Model<ResidentEntity>,
+  ) {}
+
+  private async updateRemainingNotifications(
+    deviceEntity: DeviceEntity,
+    alertsToBeFired: AlertObject[],
+  ): Promise<void> {
+    const alertsToUpdateRemainingNotifications = alertsToBeFired.map(
+      (alert) => {
+        return alert.alertId;
+      },
+    );
+
+    deviceEntity.alerts.map((alert) => {
+      if (alertsToUpdateRemainingNotifications.includes(alert.alertId)) {
+        alert.remainingNotifications--;
+        alert.lastNotificationSent = new Date();
+      }
+      return alert;
+    });
+
+    await this.deviceRepository.updateOne(
+      { _id: deviceEntity._id },
+      deviceEntity,
+      {
+        new: true,
+      },
+    );
+  }
+
+  private async alertsToBeFired(
+    deviceEntity: DeviceEntity,
+    alert: number,
+  ): Promise<AlertObject[]> {
+    const deviceInstance = getInstanceDevice(deviceEntity.deviceName);
+
+    return deviceInstance
+      .alertsToBeFired(deviceEntity, alert)
+      .filter((alert) => {
+        const timeRange = differenceBetweenDates(
+          new Date(),
+          alert.lastNotificationSent,
+          'minutes',
+        );
+
+        return (
+          alert.remainingNotifications > 0 && timeRange > alert.sleepMinutes
+        );
+      });
+  }
+
+  async alert(id: string, metric: number) {
+    const deviceEntity: DeviceEntity = await this.deviceRepository.findOne({
+      _id: id,
+    });
+
+    if (!deviceEntity) {
+      throw new HttpException(
+        'This device id not exists in database.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const alertsToBeFired: AlertObject[] = await this.alertsToBeFired(
+      deviceEntity,
+      metric,
+    );
+
+    const messagesToReceivers: sendNotificationPidgeyObject[] = [].concat(
+      ...(await Promise.all(
+        alertsToBeFired.map(async (alert) => {
+          const receiverInstance = getInstanceReceiver(
+            alert.receiver,
+            this.shelterRepository,
+            this.residentRepository,
+          );
+
+          return await receiverInstance.formatMessageReceivers(
+            deviceEntity.location.coordinates[0],
+            deviceEntity.location.coordinates[1],
+            5,
+            alert,
+            deviceEntity,
+          );
+        }),
+      )),
+    );
+
+    if (messagesToReceivers.length > 0) {
+      const pidgey = new Pidgey();
+
+      pidgey.sendNotifications(messagesToReceivers);
+      await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
+      return { message: 'alerts sent successfully', flooded: true };
+    }
+
+    return { message: 'No alerts to sent.', flooded: false };
+  }
+
+  async resetRemainingNotifications(id: string) {
+    const deviceEntity: DeviceEntity = await this.deviceRepository.findOne({
+      _id: id,
+    });
+
+    if (!deviceEntity) {
+      throw new HttpException(
+        'This device id not exists in database.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    deviceEntity.alerts.map((alert) => {
+      alert.remainingNotifications = alert.maxNotifications;
+      return alert;
+    });
+
+    await this.deviceRepository.updateOne(
+      { _id: deviceEntity._id },
+      deviceEntity,
+      {
+        new: true,
+      },
+    );
+
+    return { message: 'Alerts reset successfully.' };
+  }
+}
