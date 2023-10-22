@@ -128,7 +128,7 @@ export class AlertService {
       );
     }
 
-    deviceEntity.alerts.map((alert) => {
+    deviceEntity.alerts = deviceEntity.alerts.map((alert) => {
       alert.remainingNotifications = alert.maxNotifications;
       return alert;
     });
