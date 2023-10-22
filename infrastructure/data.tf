@@ -1,7 +1,3 @@
-data "aws_api_gateway_rest_api" "api_gateway" {
-  name = var.api_gateway_name
-}
-
 data "aws_secretsmanager_secret" "secrets" {
   name = var.secrets_manager_secret_name
 }
