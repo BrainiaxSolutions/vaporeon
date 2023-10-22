@@ -71,6 +71,3 @@ jobs:
 
     - name: Infrastructure step 07 - Terraform Apply
       run : terraform -chdir=./infrastructure apply -auto-approve -input=false tfplan
-
-    - name: Infrastructure step 08 - Terraform Show
-      run : terraform -chdir=./infrastructure show
