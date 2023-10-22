@@ -7,9 +7,7 @@ resource "aws_iam_role" "iam_role" {
       Effect = "Allow"
       Principal = {
         Service = [
-          "lambda.amazonaws.com",
-          "apigateway.amazonaws.com",
-          "elasticloadbalancing.amazonaws.com"
+          "lambda.amazonaws.com"
         ]
       }
       Action = "sts:AssumeRole"

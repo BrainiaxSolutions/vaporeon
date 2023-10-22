@@ -42,10 +42,3 @@ resource "aws_lambda_function_url" "mylambda_function_url" {
     max_age           = var.lambda_function_cors.max_age
   }
 }
-
-resource "aws_lambda_permission" "lambda_permission" {
-  function_name = aws_lambda_function.lambda_function.function_name
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  principal     = "apigateway.amazonaws.com"
-}
