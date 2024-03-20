@@ -1,38 +1,33 @@
-import Axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { config } from '../config';
 import { Injectable } from '@nestjs/common';
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 
 @Injectable()
 export class Pidgey {
-  pidgeyAPI: AxiosInstance;
-
-  constructor() {
-    this.pidgeyAPI = Axios.create({
-      baseURL: config.providers.pidgey.url,
-    });
-  }
+  pidgeyFunctionName = config.providers.pidgey.functionName;
 
   async sendNotifications(
     notificationsToBeSent: sendNotificationPidgeyObject[],
-  ): Promise<AxiosResponse> {
+  ): Promise<any> {
     try {
-      const response = await this.pidgeyAPI.post(
-        '/v1/notification/sendNotifications',
-        {
+      const lambdaClient = new LambdaClient({});
+      const command = new InvokeCommand({
+        FunctionName: this.pidgeyFunctionName,
+        Payload: JSON.stringify({
           notifications: notificationsToBeSent,
-        },
-      );
+        }),
+        InvocationType: 'RequestResponse',
+      });
 
+      const { Payload: response } = await lambdaClient.send(command);
       return response;
     } catch (error) {
-      if (error.response)
+      if (error.Error)
         throw new Error(
-          `Error on POST - sendMessage - pidgey: \x1b[31m${error.response.data.message}`,
+          `Error on POST - sendMessage - pidgey: \x1b[31m${error.Error.Message}`,
         );
 
-      throw new Error(
-        `Error on POST - sendMessage - pidgey: \x1b[31m${error.cause}`,
-      );
+      throw new Error(`Error on POST - sendMessage - pidgey: \x1b[31m${error}`);
     }
   }
 }
