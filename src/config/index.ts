@@ -9,7 +9,6 @@ export const config = Object.freeze({
   },
   providers: {
     pidgey: {
-      functionName: process.env.PIDGEY_FUNCTION_NAME,
       url: process.env.URL_PIDGEY,
       key: process.env.API_KEY_PIDGEY,
     },
