@@ -10,16 +10,29 @@ export class Pidgey {
     notificationsToBeSent: sendNotificationPidgeyObject[],
   ): Promise<any> {
     try {
-      const lambdaClient = new LambdaClient({});
+      const lambdaClient = new LambdaClient({
+        region: 'us-east-1',
+        credentials: {
+          accessKeyId: 'AKIAVRUVUA56WQXL54GL',
+          secretAccessKey: '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',
+        },
+      });
       const command = new InvokeCommand({
         FunctionName: this.pidgeyFunctionName,
         Payload: JSON.stringify({
-          notifications: notificationsToBeSent,
+          httpMethod: 'POST',
+          path: 'api/pidgey/v1/notification/sendNotifications',
+          body: Buffer.from(
+            JSON.stringify({ notifications: notificationsToBeSent }),
+          ),
         }),
         InvocationType: 'RequestResponse',
       });
 
-      const { Payload: response } = await lambdaClient.send(command);
+      const { Payload } = await lambdaClient.send(command);
+      const response = Buffer.from(Payload).toString();
+      console.log(response);
+
       return response;
     } catch (error) {
       if (error.Error)

@@ -109,7 +109,7 @@ export class AlertService {
       const pidgey = new Pidgey();
 
       pidgey.sendNotifications(messagesToReceivers);
-      await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
+      //await this.updateRemainingNotifications(deviceEntity, alertsToBeFired);
       return { message: 'alerts sent successfully', flooded: true };
     }
 
