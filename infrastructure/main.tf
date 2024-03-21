@@ -17,6 +17,7 @@ module "vaporeon_lambda_production" {
     URL_MAPS        = "https://www.google.com/maps/dir/",
     DB_URL          = "${data.external.secrets_manager_secret_json.result["DB_URL"]}",
     URL_PIDGEY      = "${data.external.secrets_manager_secret_json.result["URL_PIDGEY"]}",
+    PIDGEY_FUNCTION_NAME = "pidgey-api"
   }
 
   lambda_function_cors = {
