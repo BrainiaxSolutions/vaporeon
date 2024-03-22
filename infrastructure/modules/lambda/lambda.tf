@@ -31,5 +31,5 @@ resource "aws_lambda_function" "lambda_function" {
 
 resource "aws_lambda_function_url" "mylambda_function_url" {
   function_name      = aws_lambda_function.lambda_function.function_name
-  authorization_type = "None"
+  authorization_type = "NONE"
 }
